@@ -3,6 +3,7 @@ const handleResponse = require('./utilities/handle-response');
 const handleError = require('./utilities/handle-error');
 const getRequestUrl = require('./utilities/get-request-url');
 const getRequestQuery = require('./utilities/get-request-query');
+const parseRequestText = require('./utilities/parse-request-text');
 const parseRequestJson = require('./utilities/parse-request-json');
 const parseRequestForm = require('./utilities/parse-request-form');
 
@@ -12,6 +13,7 @@ exports.handleResponse = handleResponse;
 exports.handleError = handleError;
 exports.getRequestUrl = getRequestUrl;
 exports.getRequestQuery = getRequestQuery;
+exports.parseRequestText = parseRequestText;
 exports.parseRequestJson = parseRequestJson;
 exports.parseRequestForm = parseRequestForm;
 
