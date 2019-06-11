@@ -11,7 +11,7 @@ function parseRequestForm(request) {
 		return Promise.reject(errors.invalidInput('missing_content_type_header'));
 	}
 
-	const {test: parsedContentType} = parseContentType(contentType);
+	const {type: parsedContentType} = parseContentType(contentType);
 
 	if (!validContentTypes.includes(parsedContentType)) {
 		return Promise.reject(errors.invalidInput('invalid_content_type_header'));
