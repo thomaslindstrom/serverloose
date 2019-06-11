@@ -4,8 +4,10 @@ const getRequestUrl = require('./get-request-url');
  * Get the query for a request
  * @param {object} request - request object
  * @param {string} key - query key
+ *
+ * @returns {function|string} getQuery|query
 **/
-module.exports = function getRequestQuery(request, key) {
+function getRequestQuery(request, key) {
 	const url = getRequestUrl(request);
 
 	function getQuery(...parameters) {
@@ -20,3 +22,5 @@ module.exports = function getRequestQuery(request, key) {
 
 	return (key) ? getQuery(key) : getQuery;
 }
+
+module.exports = getRequestQuery;

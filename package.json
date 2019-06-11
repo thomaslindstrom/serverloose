@@ -15,14 +15,14 @@
     "author": "Thomas Lindstrøm <t@hom.as>",
     "license": "MIT",
     "scripts": {
-        "dev": "nodemon -r esm development.js",
         "test": "jest --coverage --env=node --forceExit",
         "lint": "xo",
         "fix": "xo --fix"
     },
     "dependencies": {
         "@amphibian/errors": "^2.0.0",
-        "body": "^5.1.0"
+        "body": "^5.1.0",
+        "content-type": "^1.0.4"
     },
     "devDependencies": {
         "@babel/core": "^7.4.3",

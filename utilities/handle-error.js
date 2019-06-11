@@ -3,8 +3,8 @@
  * @param {object} context - context object
  * @param {object} error - error object
 **/
-module.exports = function handleError({response}, error) {
-	var outputError = error;
+function handleError({response}, error) {
+	let outputError = error;
 
 	if (!error.type || (error.type === 'fatal_error')) {
 		console.error(error.stack);
@@ -26,3 +26,5 @@ module.exports = function handleError({response}, error) {
 		})
 	);
 }
+
+module.exports = handleError;

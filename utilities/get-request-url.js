@@ -5,7 +5,9 @@ const {URL} = require('url');
  * @param {object} request - request object
  * @returns {object} urlObject
 **/
-module.exports = function getRequestUrl(request) {
+function getRequestUrl(request) {
 	const protocol = (request.connection.encrypted) ? 'https' : 'http';
 	return new URL(request.url, `${protocol}://${request.headers.host}`);
 }
+
+module.exports = getRequestUrl;

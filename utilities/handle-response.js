@@ -4,7 +4,7 @@
  * @param {object} body - output body
  * @param {object} options - response options
 **/
-module.exports = function handleResponse({response}, body = {}, options = {}) {
+function handleResponse({response}, body = {}, options = {}) {
 	if (response.finished) {
 		return;
 	}
@@ -18,3 +18,5 @@ module.exports = function handleResponse({response}, body = {}, options = {}) {
 		response.end(body);
 	}
 }
+
+module.exports = handleResponse;

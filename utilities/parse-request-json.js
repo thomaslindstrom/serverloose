@@ -1,14 +1,19 @@
 const errors = require('@amphibian/errors');
+const {parse: parseContentType} = require('content-type');
 const parseJson = require('body/json');
 
-module.exports = function parseRequestJson(request) {
+const validContentTypes = ['application/json'];
+
+function parseRequestJson(request) {
 	const contentType = request.headers['content-type'];
 
 	if (!contentType) {
 		return Promise.reject(errors.invalidInput('missing_content_type_header'));
 	}
 
-	if (contentType !== 'application/json') {
+	const {test: parsedContentType} = parseContentType(contentType);
+
+	if (!validContentTypes.includes(parsedContentType)) {
 		return Promise.reject(errors.invalidInput('invalid_content_type_header'));
 	}
 
@@ -22,3 +27,5 @@ module.exports = function parseRequestJson(request) {
 		});
 	});
 }
+
+module.exports = parseRequestJson;

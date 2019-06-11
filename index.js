@@ -22,7 +22,7 @@ exports.parseRequestForm = parseRequestForm;
  *
  * @returns {function} handler - prepared handler
 **/
-exports.default = function handler(responder, options = {}) {
+function handler(responder, options = {}) {
 	const supportedMethods = options.methods
 		&& options.methods.map((method) => method.toUpperCase());
 
@@ -49,3 +49,5 @@ exports.default = function handler(responder, options = {}) {
 		}
 	};
 }
+
+exports.default = handler;

@@ -1,16 +1,19 @@
 const errors = require('@amphibian/errors');
+const {parse: parseContentType} = require('content-type');
 const parseForm = require('body/form');
 
-const contentTypes = ['application/x-www-form-urlencoded', 'multipart/form-data'];
+const validContentTypes = ['application/x-www-form-urlencoded', 'multipart/form-data'];
 
-module.exports = function parseRequestForm(request) {
+function parseRequestForm(request) {
 	const contentType = request.headers['content-type'];
 
 	if (!contentType) {
 		return Promise.reject(errors.invalidInput('missing_content_type_header'));
 	}
 
-	if (!contentTypes.includes(contentType)) {
+	const {test: parsedContentType} = parseContentType(contentType);
+
+	if (!validContentTypes.includes(parsedContentType)) {
 		return Promise.reject(errors.invalidInput('invalid_content_type_header'));
 	}
 
@@ -24,3 +27,5 @@ module.exports = function parseRequestForm(request) {
 		});
 	});
 }
+
+module.exports = parseRequestForm;
