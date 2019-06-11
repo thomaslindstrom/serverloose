@@ -1,0 +1,47 @@
+{
+    "name": "serverloose",
+    "version": "1.0.0",
+    "description": "serverless utilities",
+    "main": "index.js",
+    "repository": "https://github.com/thomaslindstrom/serverloose",
+    "author": "Thomas Lindstrøm <t@hom.as>",
+    "license": "MIT",
+    "scripts": {
+        "dev": "nodemon -r esm development.js",
+        "test": "jest --coverage --env=node --forceExit",
+        "lint": "xo",
+        "fix": "xo --fix"
+    },
+    "dependencies": {
+        "@amphibian/errors": "^2.0.0",
+        "body": "^5.1.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.3",
+        "@babel/plugin-transform-runtime": "^7.4.3",
+        "@babel/preset-env": "^7.4.3",
+        "babel-eslint": "^10.0.1",
+        "eslint-config-amphibian": "^1.1.2",
+        "fs-extra": "^7.0.1",
+        "jest": "^23.6.0",
+        "xo": "^0.23.0"
+    },
+    "xo": {
+        "parser": "babel-eslint",
+        "extends": [
+            "eslint-config-amphibian"
+        ],
+        "rules": {
+            "no-async-promise-executor": 1,
+            "promise/param-names": 1
+        },
+        "overrides": [
+            {
+                "files": "test.js",
+                "envs": [
+                    "jest"
+                ]
+            }
+        ]
+    }
+}
