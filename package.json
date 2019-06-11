@@ -1,8 +1,15 @@
 {
     "name": "serverloose",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "serverless utilities",
-    "keywords": ["serverless", "handler", "request", "response", "utility", "parse"],
+    "keywords": [
+        "serverless",
+        "handler",
+        "request",
+        "response",
+        "utility",
+        "parse"
+    ],
     "main": "index.js",
     "repository": "https://github.com/thomaslindstrom/serverloose",
     "author": "Thomas Lindstrøm <t@hom.as>",
