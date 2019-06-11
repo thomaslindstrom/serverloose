@@ -3,24 +3,22 @@ const getRequestUrl = require('./get-request-url');
 /**
  * Get the query for a request
  * @param {object} request - request object
- * @param {string} key - query key
+ * @param {string|array} keys - query keys
  *
- * @returns {function|string} getQuery|query
+ * @returns {function|string|array} getQuery|query|queries
 **/
-function getRequestQuery(request, key) {
+function getRequestQuery(request, keys) {
 	const url = getRequestUrl(request);
 
-	function getQuery(...parameters) {
-		const queries = parameters.map((parameter) => url.searchParams.get(parameter));
-
-		if (queries.length === 1) {
-			return queries[0];
+	function getQuery(keys) {
+		if (Array.isArray(keys)) {
+			return keys.map((i) => url.searchParams.get(i));
 		}
 
-		return queries;
+		return url.searchParams.get(keys);
 	}
 
-	return (key) ? getQuery(key) : getQuery;
+	return (keys) ? getQuery(keys) : getQuery;
 }
 
 module.exports = getRequestQuery;
