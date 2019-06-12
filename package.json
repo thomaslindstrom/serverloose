@@ -21,7 +21,6 @@
     },
     "dependencies": {
         "@amphibian/errors": "^2.0.0",
-        "@amphibian/object-has-property": "^1.0.1",
         "body": "^5.1.0",
         "content-type": "^1.0.4"
     },

@@ -1,5 +1,4 @@
 const errors = require('@amphibian/errors');
-const objectHasProperty = require('@amphibian/object-has-property');
 const handleResponse = require('./utilities/handle-response');
 const handleError = require('./utilities/handle-error');
 const getRequestUrl = require('./utilities/get-request-url');
