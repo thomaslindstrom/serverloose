@@ -10,12 +10,12 @@ function handleResponse({response}, body = {}, options = {}) {
 	}
 
 	response.statusCode = 200;
-	response.setHeader('content-type', (options.contentType || 'application/json'));
 
-	if (!options.contentType || (options.contentType === 'application/json')) {
-		response.end(JSON.stringify({success: true, ...body}));
-	} else {
+	if (response.hasHeader('content-type')) {
 		response.end(body);
+	} else {
+		response.setHeader('content-type', 'application/json');
+		response.end(JSON.stringify({success: true, ...body}));
 	}
 }
 
