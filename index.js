@@ -39,7 +39,10 @@ function handler(responder, options = {}) {
 		...defaultResponseHeaders,
 		'access-control-allow-methods': (supportedMethods)
 			? supportedMethods.join(', ')
-			: 'GET'
+			: 'GET',
+		'access-control-allow-headers': (options.headers)
+			? options.headers.join(', ')
+			: ''
 	};
 
 	return async (request, response) => {
