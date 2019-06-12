@@ -27,13 +27,13 @@ const defaultResponseHeaders = {
 
 const responseListHeaders = ['access-control-allow-methods', 'access-control-allow-headers'];
 
-function patchResponseListHeader(response, header) {
+function patchResponseListHeader(response, header, value) {
 	if (response.hasHeader(header)) {
 		const currentValues = (response.getHeader(header) || '')
 			.split(/\s*?,\s*?/);
 
 		if (!currentValues.includes(value)) {
-			response.setHeader(key, currentValues.concat(value).join(', '));
+			response.setHeader(header, currentValues.concat(value).join(', '));
 		}
 	}
 }
@@ -64,7 +64,7 @@ function handler(responder, options = {}) {
 		Object.entries(responseHeaders).forEach(([key, value]) => {
 			if (response.hasHeader(key)) {
 				if (responseListHeaders.includes(key)) {
-					patchResponseListHeader(response, key);
+					patchResponseListHeader(response, key, value);
 				}
 			} else {
 				response.setHeader(key, value);
