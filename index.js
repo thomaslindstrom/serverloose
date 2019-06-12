@@ -29,8 +29,8 @@ const defaultResponseHeaders = {
 const responseListHeaders = ['access-control-allow-methods', 'access-control-allow-headers'];
 
 function patchResponseListHeader(response, header) {
-	if (objectHasProperty(response.headers, header)) {
-		const currentValues = (response.headers[header] || '')
+	if (response.hasHeader(header)) {
+		const currentValues = (response.getHeader(header) || '')
 			.split(/\s*?,\s*?/);
 
 		if (!currentValues.includes(value)) {
@@ -63,7 +63,7 @@ function handler(responder, options = {}) {
 		const context = {request, response};
 
 		Object.entries(responseHeaders).forEach(([key, value]) => {
-			if (objectHasProperty(response.headers, key)) {
+			if (response.hasHeader(key)) {
 				if (responseListHeaders.includes(key)) {
 					patchResponseListHeader(response, key);
 				}
