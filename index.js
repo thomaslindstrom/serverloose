@@ -17,6 +17,14 @@ exports.parseRequestText = parseRequestText;
 exports.parseRequestJson = parseRequestJson;
 exports.parseRequestForm = parseRequestForm;
 
+const defaultResponseHeaders = {
+	'access-control-allow-origin': '*',
+	'access-control-max-age': 3600,
+	'x-frame-options': 'DENY',
+	'x-content-type-options': 'nosniff',
+	'strict-transport-security': 'max-age=16070400; includeSubDomains'
+};
+
 /**
  * Handler function utility
  * @param {function} responder - responder function
@@ -27,9 +35,17 @@ exports.parseRequestForm = parseRequestForm;
 function handler(responder, options = {}) {
 	const supportedMethods = options.methods
 		&& options.methods.map((method) => method.toUpperCase());
+	const responseHeaders = {
+		...defaultResponseHeaders,
+		'access-control-allow-methods': supportedMethods
+	};
 
 	return async (request, response) => {
 		const context = {request, response};
+
+		Object.entries(responseHeaders).forEach(([key, value]) => {
+			response.setHeader(key, value);
+		});
 
 		if (supportedMethods) {
 			const requestMethod = request.method.toUpperCase();
