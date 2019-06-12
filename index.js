@@ -37,7 +37,9 @@ function handler(responder, options = {}) {
 		&& options.methods.map((method) => method.toUpperCase());
 	const responseHeaders = {
 		...defaultResponseHeaders,
-		'access-control-allow-methods': supportedMethods
+		'access-control-allow-methods': (supportedMethods)
+			? supportedMethods.join(', ')
+			: 'GET'
 	};
 
 	return async (request, response) => {
