@@ -1,4 +1,5 @@
 const errors = require('@amphibian/errors');
+const objectHasProperty = require('@amphibian/object-has-property');
 const handleResponse = require('./utilities/handle-response');
 const handleError = require('./utilities/handle-error');
 const getRequestUrl = require('./utilities/get-request-url');
@@ -25,6 +26,19 @@ const defaultResponseHeaders = {
 	'strict-transport-security': 'max-age=16070400; includeSubDomains'
 };
 
+const responseListHeaders = ['access-control-allow-methods', 'access-control-allow-headers'];
+
+function patchResponseListHeader(response, header) {
+	if (objectHasProperty(response.headers, header)) {
+		const currentValues = (response.headers[header] || '')
+			.split(/\s*?,\s*?/);
+
+		if (!currentValues.includes(value)) {
+			response.setHeader(key, currentValues.concat(value).join(', '));
+		}
+	}
+}
+
 /**
  * Handler function utility
  * @param {function} responder - responder function
@@ -49,7 +63,13 @@ function handler(responder, options = {}) {
 		const context = {request, response};
 
 		Object.entries(responseHeaders).forEach(([key, value]) => {
-			response.setHeader(key, value);
+			if (objectHasProperty(response.headers, key)) {
+				if (responseListHeaders.includes(key)) {
+					patchResponseListHeader(response, key);
+				}
+			} else {
+				response.setHeader(key, value);
+			}
 		});
 
 		if (supportedMethods) {
