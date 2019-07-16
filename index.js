@@ -6,6 +6,7 @@ const getRequestQuery = require('./utilities/get-request-query');
 const parseRequestText = require('./utilities/parse-request-text');
 const parseRequestJson = require('./utilities/parse-request-json');
 const parseRequestForm = require('./utilities/parse-request-form');
+const parseRequestFile = require('./utilities/parse-request-file');
 
 Object.defineProperty(exports, '__esModule', {value: true});
 
@@ -16,6 +17,7 @@ exports.getRequestQuery = getRequestQuery;
 exports.parseRequestText = parseRequestText;
 exports.parseRequestJson = parseRequestJson;
 exports.parseRequestForm = parseRequestForm;
+exports.parseRequestFile = parseRequestFile;
 
 const defaultResponseHeaders = {
 	'access-control-allow-origin': '*',

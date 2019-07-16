@@ -22,17 +22,18 @@
     "dependencies": {
         "@amphibian/errors": "^2.0.0",
         "body": "^5.1.0",
-        "content-type": "^1.0.4"
+        "content-type": "^1.0.4",
+        "multer": "^1.4.2"
     },
     "devDependencies": {
         "@babel/core": "^7.4.3",
         "@babel/plugin-transform-runtime": "^7.4.3",
         "@babel/preset-env": "^7.4.3",
         "babel-eslint": "^10.0.1",
-        "eslint-config-amphibian": "^1.1.2",
+        "eslint-config-amphibian": "^1.1.4",
         "fs-extra": "^7.0.1",
         "jest": "^23.6.0",
-        "xo": "^0.23.0"
+        "xo": "^0.24.0"
     },
     "xo": {
         "parser": "babel-eslint",

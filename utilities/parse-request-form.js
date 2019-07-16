@@ -1,9 +1,14 @@
-const errors = require('@amphibian/errors');
 const {parse: parseContentType} = require('content-type');
 const parseForm = require('body/form');
+const errors = require('@amphibian/errors');
 
 const validContentTypes = ['application/x-www-form-urlencoded', 'multipart/form-data'];
 
+/**
+ * Parse incoming request form
+ * @param {object} request - node request object
+ * @returns {object} body
+**/
 function parseRequestForm(request) {
 	const contentType = request.headers['content-type'];
 

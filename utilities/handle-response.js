@@ -2,9 +2,8 @@
  * Handle server response
  * @param {object} context - context object
  * @param {object} body - output body
- * @param {object} options - response options
 **/
-function handleResponse({response}, body = {}, options = {}) {
+function handleResponse({response}, body = {}) {
 	if (response.finished) {
 		return;
 	}

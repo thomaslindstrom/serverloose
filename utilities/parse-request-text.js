@@ -1,9 +1,14 @@
-const errors = require('@amphibian/errors');
 const {parse: parseContentType} = require('content-type');
 const parseText = require('body');
+const errors = require('@amphibian/errors');
 
 const validContentTypes = ['text/plain'];
 
+/**
+ * Parse incoming request text
+ * @param {object} request - node request object
+ * @returns {string} text
+**/
 function parseRequestText(request) {
 	const contentType = request.headers['content-type'];
 

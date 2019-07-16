@@ -1,9 +1,14 @@
-const errors = require('@amphibian/errors');
 const {parse: parseContentType} = require('content-type');
 const parseJson = require('body/json');
+const errors = require('@amphibian/errors');
 
 const validContentTypes = ['application/json'];
 
+/**
+ * Parse incoming request json
+ * @param {object} request - node request object
+ * @returns {object} body
+**/
 function parseRequestJson(request) {
 	const contentType = request.headers['content-type'];
 
