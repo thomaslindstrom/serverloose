@@ -19,7 +19,7 @@ async function expectToThrow(test, callback) {
  * @returns {string}
 **/
 function randomString() {
-	return Math.random().toString(36).substring(2);
+	return Math.random().toString(36).slice(2);
 }
 
 /**

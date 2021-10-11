@@ -27,7 +27,7 @@ const defaultResponseHeaders = {
 	'strict-transport-security': 'max-age=16070400; includeSubDomains'
 };
 
-const responseListHeaders = ['access-control-allow-methods', 'access-control-allow-headers'];
+const responseListHeaders = new Set(['access-control-allow-methods', 'access-control-allow-headers']);
 
 function patchResponseListHeader(response, header, value) {
 	if (response.hasHeader(header)) {
@@ -63,15 +63,15 @@ function handler(responder, options = {}) {
 	return async (request, response) => {
 		const context = {request, response};
 
-		Object.entries(responseHeaders).forEach(([key, value]) => {
+		for (const [key, value] of Object.entries(responseHeaders)) {
 			if (response.hasHeader(key)) {
-				if (responseListHeaders.includes(key)) {
+				if (responseListHeaders.has(key)) {
 					patchResponseListHeader(response, key, value);
 				}
 			} else {
 				response.setHeader(key, value);
 			}
-		});
+		}
 
 		if (supportedMethods) {
 			const requestMethod = request.method.toUpperCase();

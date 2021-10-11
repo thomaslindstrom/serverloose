@@ -2,24 +2,28 @@ const {parse: parseContentType} = require('content-type');
 const parseText = require('body');
 const errors = require('@amphibian/errors');
 
-const validContentTypes = ['text/plain'];
+const validContentTypes = new Set(['text/plain']);
 
 /**
  * Parse incoming request text
  * @param {object} request - node request object
+ * @param {object} options - parse options
+ * @param {boolean} options.ignoreContentType - ignore content type header
  * @returns {string} text
 **/
-function parseRequestText(request) {
-	const contentType = request.headers['content-type'];
+function parseRequestText(request, options = {}) {
+	if (options.ignoreContentType !== false) {
+		const contentType = request.headers['content-type'];
 
-	if (!contentType) {
-		return Promise.reject(errors.invalidInput('missing_content_type_header'));
-	}
+		if (!contentType) {
+			return Promise.reject(errors.invalidInput('missing_content_type_header'));
+		}
 
-	const {type: parsedContentType} = parseContentType(contentType);
+		const {type: parsedContentType} = parseContentType(contentType);
 
-	if (!validContentTypes.includes(parsedContentType)) {
-		return Promise.reject(errors.invalidInput('invalid_content_type_header'));
+		if (!validContentTypes.has(parsedContentType)) {
+			return Promise.reject(errors.invalidInput('invalid_content_type_header'));
+		}
 	}
 
 	return new Promise((resolve, reject) => {

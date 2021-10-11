@@ -23,7 +23,7 @@
         "@amphibian/errors": "^2.0.0",
         "body": "^5.1.0",
         "content-type": "^1.0.4",
-        "multer": "^1.4.2"
+        "multer": "^1.4.3"
     },
     "devDependencies": {
         "@babel/core": "^7.4.3",
@@ -32,17 +32,21 @@
         "babel-eslint": "^10.0.1",
         "eslint-config-amphibian": "^1.1.4",
         "fs-extra": "^7.0.1",
-        "jest": "^23.6.0",
-        "xo": "^0.24.0"
+        "jest": "^27.2.5",
+        "xo": "^0.45.0"
     },
     "xo": {
+        "envs": ["node"],
         "parser": "babel-eslint",
         "extends": [
             "eslint-config-amphibian"
         ],
         "rules": {
             "no-async-promise-executor": 1,
-            "promise/param-names": 1
+            "promise/param-names": 1,
+            "unicorn/prefer-module": 0,
+            "no-implicit-globals": 0,
+            "comma-dangle": ["error", "never"]
         },
         "overrides": [
             {
