@@ -12,7 +12,7 @@ const validContentTypes = new Set(['application/json']);
  * @returns {object} body
 **/
 function parseRequestJson(request, options = {}) {
-	if (options.ignoreContentType !== false) {
+	if (options.ignoreContentType !== true) {
 		const contentType = request.headers['content-type'];
 
 		if (!contentType) {

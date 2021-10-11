@@ -12,7 +12,7 @@ const validContentTypes = new Set(['application/x-www-form-urlencoded', 'multipa
  * @returns {object} body
 **/
 function parseRequestForm(request, options = {}) {
-	if (options.ignoreContentType !== false) {
+	if (options.ignoreContentType !== true) {
 		const contentType = request.headers['content-type'];
 
 		if (!contentType) {

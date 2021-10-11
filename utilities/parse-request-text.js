@@ -12,7 +12,7 @@ const validContentTypes = new Set(['text/plain']);
  * @returns {string} text
 **/
 function parseRequestText(request, options = {}) {
-	if (options.ignoreContentType !== false) {
+	if (options.ignoreContentType !== true) {
 		const contentType = request.headers['content-type'];
 
 		if (!contentType) {

@@ -18,7 +18,7 @@ function parseRequestFile(field, request, options = {}) {
 		return Promise.reject(errors.missingRequiredParameters(undefined, 'field'));
 	}
 
-	if (options.ignoreContentType !== false) {
+	if (options.ignoreContentType !== true) {
 		const contentType = request.headers['content-type'];
 
 		if (!contentType) {
