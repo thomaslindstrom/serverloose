@@ -1,6 +1,6 @@
 {
     "name": "serverloose",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "serverless utilities",
     "keywords": [
         "serverless",
@@ -36,7 +36,9 @@
         "xo": "^0.45.0"
     },
     "xo": {
-        "envs": ["node"],
+        "envs": [
+            "node"
+        ],
         "parser": "babel-eslint",
         "extends": [
             "eslint-config-amphibian"
@@ -46,7 +48,10 @@
             "promise/param-names": 1,
             "unicorn/prefer-module": 0,
             "no-implicit-globals": 0,
-            "comma-dangle": ["error", "never"]
+            "comma-dangle": [
+                "error",
+                "never"
+            ]
         },
         "overrides": [
             {
