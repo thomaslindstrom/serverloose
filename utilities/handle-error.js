@@ -20,6 +20,7 @@ function handleError({response}, error) {
 		JSON.stringify({
 			success: false,
 			error: {
+				type: outputError.type,
 				code: outputError.code,
 				message: outputError.message
 			}
