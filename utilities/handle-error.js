@@ -14,6 +14,10 @@ function handleError({response}, error) {
 		outputError = genericError;
 	}
 
+	if (response.finished) {
+		return;
+	}
+
 	response.statusCode = outputError.status || 500;
 	response.setHeader('content-type', 'application/json');
 	response.end(
