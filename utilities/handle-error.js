@@ -12,6 +12,8 @@ function handleError({response}, error) {
 		const genericError = new Error('Unknown Error');
 		genericError.code = 'unknown_error';
 		outputError = genericError;
+	} else {
+		console.error(error);
 	}
 
 	if (response.finished) {
