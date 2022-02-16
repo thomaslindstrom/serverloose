@@ -77,6 +77,10 @@ function handler(responder, options = {}) {
 			const requestMethod = request.method.toUpperCase();
 
 			if (requestMethod === 'OPTIONS') {
+				if (!response.hasHeader('cache-control')) {
+					response.setHeader('cache-control', 'public, s-maxage=30, max-age=30, stale-while-revalidate');
+				}
+
 				return response.end(supportedMethods.join(', '));
 			}
 
