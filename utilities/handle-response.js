@@ -13,7 +13,7 @@ function handleResponse({response}, body = {}) {
 	if (response.hasHeader('content-type')) {
 		response.end(body);
 	} else {
-		response.setHeader('content-type', 'application/json');
+		response.setHeader('content-type', 'application/json; charset=utf-8');
 		response.end(JSON.stringify({success: true, ...body}));
 	}
 }
