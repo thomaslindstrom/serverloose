@@ -1,10 +1,12 @@
+import type {Context} from '../types';
+
 /**
  * Handle server response
  * @param {object} context - context object
  * @param {object} body - output body
-**/
-function handleResponse({response}, body = {}) {
-	if (response.finished) {
+ **/
+export default function handleResponse({response}: Context, body: any = {}) {
+	if (response.writableEnded) {
 		return;
 	}
 
@@ -17,5 +19,3 @@ function handleResponse({response}, body = {}) {
 		response.end(JSON.stringify({success: true, ...body}));
 	}
 }
-
-module.exports = handleResponse;

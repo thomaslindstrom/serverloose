@@ -10,48 +10,45 @@
         "utility",
         "parse"
     ],
-    "main": "index.js",
-    "repository": "https://github.com/thomaslindstrom/serverloose",
+	"main": "build/index.js",
+	"types": "build/index.d.ts",
+    "repository": {
+		"type": "git",
+		"url": "https://github.com/thomaslindstrom/serverloose.git"
+	},
     "author": "Thomas Lindstrøm <t@hom.as>",
     "license": "MIT",
     "scripts": {
+        "build": "tsc --p tsconfig.json",
         "test": "jest --coverage --env=node --forceExit",
-        "lint": "xo",
-        "fix": "xo --fix"
+        "lint": "xo --prettier",
+        "fix": "xo --prettier --fix",
+        "format": "prettier -w .",
+        "format:check": "prettier --check .",
+        "typescript:check": "tsc --noEmit --p tsconfig.json"
     },
     "dependencies": {
-        "@amphibian/errors": "^2.0.0",
         "body": "^5.1.0",
         "content-type": "^1.0.4",
         "multer": "^1.4.4"
     },
     "devDependencies": {
-        "@babel/core": "^7.17.2",
-        "@babel/plugin-transform-runtime": "^7.17.0",
-        "@babel/preset-env": "^7.16.11",
-        "babel-eslint": "^10.0.1",
-        "eslint-config-amphibian": "^1.1.4",
+        "@types/body": "^5.1.1",
+        "@types/content-type": "^1.1.5",
+        "@types/multer": "^1.4.7",
         "fs-extra": "^7.0.1",
         "jest": "^27.5.1",
-        "xo": "^0.45.0"
+        "prettier": "^2.8.0",
+        "typescript": "^4.9.3",
+        "xo": "^0.53.1"
     },
     "xo": {
         "envs": [
             "node"
         ],
-        "parser": "babel-eslint",
-        "extends": [
-            "eslint-config-amphibian"
-        ],
         "rules": {
-            "no-async-promise-executor": 1,
-            "promise/param-names": 1,
-            "unicorn/prefer-module": 0,
-            "no-implicit-globals": 0,
-            "comma-dangle": [
-                "error",
-                "never"
-            ]
+            "import/extensions": 0,
+            "no-constructor-return": 0
         },
         "overrides": [
             {
