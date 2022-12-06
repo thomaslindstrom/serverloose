@@ -1,3 +1,4 @@
+import {type Buffer} from 'node:buffer';
 import {parse as parseContentType} from 'content-type';
 import multer from 'multer';
 import {type Context} from '../types';
