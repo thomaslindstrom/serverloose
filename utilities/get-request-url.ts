@@ -1,5 +1,5 @@
 import {URL} from 'node:url';
-import type {Context} from '../types';
+import {type Context} from '../types';
 
 /**
  * Get the parsed url object for a request
@@ -25,6 +25,6 @@ export default function getRequestUrl(request: Context['request']) {
 			: forwardedHostHeader;
 
 		const host = forwardedHost ?? request.headers.host ?? '';
-		return new URL(request.url, `${protocol}://${host}`);
+		return new URL(request.url, `${protocol}//${host}`);
 	}
 }

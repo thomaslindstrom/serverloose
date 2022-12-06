@@ -1,4 +1,4 @@
-import type {Context} from '../types';
+import {type Context} from '../types';
 import getRequestUrl from './get-request-url';
 
 function getQuery(url: URL, keys: string | string[]) {
