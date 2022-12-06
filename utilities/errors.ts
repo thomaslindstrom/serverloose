@@ -9,7 +9,7 @@ export function isServerlooseError(input: unknown): input is ServerlooseError {
 	return (
 		typeof input === 'object' &&
 		input !== null &&
-		'ServerlooseError' in input &&
+		'isServerlooseError' in input &&
 		(input as unknown as ServerlooseError).isServerlooseError === true
 	);
 }
