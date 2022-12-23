@@ -7,6 +7,7 @@ import {
 	InvalidInputError,
 	MissingRequiredParametersError
 } from './errors';
+import getRequestHeader from './get-request-header';
 
 const validContentTypes = new Set(['multipart/form-data']);
 const processRequestFile = multer({storage: multer.memoryStorage()});
@@ -41,12 +42,17 @@ export default async function parseRequestFile(
 	}
 
 	if (options.ignoreContentType !== true) {
-		const contentType = request.headers['content-type'];
+		const contentType = getRequestHeader(request, 'content-type');
 
 		if (!contentType) {
 			throw new BadInputError({
 				message: 'Missing content type header',
 				code: 'missing_content_type_header'
+			});
+		} else if (typeof contentType !== 'string') {
+			throw new BadInputError({
+				message: 'Invalid content type header',
+				code: 'invalid_content_Type_header'
 			});
 		}
 

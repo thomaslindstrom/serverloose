@@ -1,4 +1,5 @@
 import {type Context} from '../types';
+import getRequestHeader from './get-request-header';
 
 /**
  * Get the parsed url object for a request
@@ -7,23 +8,11 @@ import {type Context} from '../types';
  **/
 export default function getRequestUrl(request: Context['request']) {
 	if ('url' in request && request.url) {
-		const forwardedProtocolHeader = request.headers['x-forwarded-proto'];
-		let protocol = 'http:';
+		const forwardedProtocol = getRequestHeader(request, 'x-forwarded-proto');
+		const protocol = forwardedProtocol ? `${forwardedProtocol}:` : 'http:';
+		const forwardedHost = getRequestHeader(request, 'x-forwarded-host');
+		const host = forwardedHost ?? getRequestHeader(request, 'host') ?? '';
 
-		if (forwardedProtocolHeader) {
-			const forwardedProtocol = Array.isArray(forwardedProtocolHeader)
-				? forwardedProtocolHeader[0]
-				: forwardedProtocolHeader;
-
-			protocol = `${forwardedProtocol}:`;
-		}
-
-		const forwardedHostHeader = request.headers['x-forwarded-host'];
-		const forwardedHost = Array.isArray(forwardedHostHeader)
-			? forwardedHostHeader[0]
-			: forwardedHostHeader;
-
-		const host = forwardedHost ?? request.headers.host ?? '';
 		return new URL(request.url, `${protocol}//${host}`);
 	}
 }

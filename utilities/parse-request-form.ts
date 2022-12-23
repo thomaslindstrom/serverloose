@@ -2,6 +2,7 @@ import {parse as parseContentType} from 'content-type';
 import parseForm from 'body/form';
 import {type Context} from '../types';
 import {BadInputError, InvalidInputError} from './errors';
+import getRequestHeader from './get-request-header';
 
 const validContentTypes = new Set([
 	'application/x-www-form-urlencoded',
@@ -24,12 +25,17 @@ export default async function parseRequestForm(
 	options: ParseRequestFormOptions = {}
 ) {
 	if (options.ignoreContentType !== true) {
-		const contentType = request.headers['content-type'];
+		const contentType = getRequestHeader(request, 'content-type');
 
 		if (!contentType) {
 			throw new BadInputError({
 				message: 'Missing content type header',
 				code: 'missing_content_type_header'
+			});
+		} else if (typeof contentType !== 'string') {
+			throw new BadInputError({
+				message: 'Invalid content type header',
+				code: 'invalid_content_Type_header'
 			});
 		}
 

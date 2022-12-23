@@ -11,6 +11,9 @@ export {default as getRequestQuery} from './utilities/get-request-query';
 export * from './utilities/get-request-url';
 export {default as getRequestUrl} from './utilities/get-request-url';
 
+export * from './utilities/get-request-header';
+export {default as getRequestHeader} from './utilities/get-request-header';
+
 export * from './utilities/handle-error';
 export {default as handleError} from './utilities/handle-error';
 

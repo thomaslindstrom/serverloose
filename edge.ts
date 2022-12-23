@@ -34,18 +34,13 @@ export {default as parseRequestJson} from './utilities/parse-request-json';
 export * from './utilities/parse-request-text';
 export {default as parseRequestText} from './utilities/parse-request-text';
 
-const defaultResponseHeaders = {
-	'access-control-allow-origin': '*',
-	'access-control-max-age': 3600,
-	'x-frame-options': 'DENY',
-	'x-content-type-options': 'nosniff',
-	'strict-transport-security': 'max-age=16070400; includeSubDomains'
-};
-
-const responseListHeaders = new Set([
-	'access-control-allow-methods',
-	'access-control-allow-headers'
-]);
+const defaultResponseHeaders: Array<[string, string]> = [
+	['access-control-allow-origin', '*'],
+	['access-control-max-age', '3600'],
+	['x-frame-options', 'DENY'],
+	['x-content-type-options', 'nosniff'],
+	['strict-transport-security', 'max-age=16070400; includeSubDomains']
+];
 
 function handleError(error: Error) {
 	let outputError: ServerlooseError;
@@ -70,10 +65,7 @@ function handleError(error: Error) {
 	);
 }
 
-export type EdgeResponder = (
-	request: NextRequest,
-	headers: Headers
-) => Promise<NextResponse>;
+export type EdgeResponder = (request: NextRequest) => Promise<NextResponse>;
 
 /**
  * Edge handler function utility
@@ -87,48 +79,35 @@ function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 		method.toUpperCase()
 	);
 
-	const responseHeaders = {
+	const headers: HeadersInit = [
 		...defaultResponseHeaders,
-		'access-control-allow-methods': supportedMethods
-			? supportedMethods.join(', ')
-			: 'GET',
-		'access-control-allow-headers': options.headers
-			? options.headers.join(', ')
-			: ''
-	};
+		[
+			'access-control-allow-methods',
+			supportedMethods ? supportedMethods.join(', ') : 'GET'
+		],
+		[
+			'access-control-allow-headers',
+			options.headers ? options.headers.join(', ') : ''
+		]
+	];
 
 	return async (request: NextRequest) => {
-		const headers: Headers = {};
-
-		for (const [key, value] of Object.entries(responseHeaders)) {
-			if (headers[key]) {
-				if (responseListHeaders.has(key)) {
-					const headerValue = headers[key];
-
-					if (typeof headerValue === 'string') {
-						const currentValues = headerValue.split(/\s*?,\s*?/);
-						const stringedValue = String(value);
-
-						if (!currentValues.includes(stringedValue)) {
-							headers[key] = currentValues.concat(stringedValue).join(', ');
-						}
-					}
-				}
-			} else {
-				headers[key] = value;
-			}
-		}
+		const responseHeaders: HeadersInit = headers;
 
 		if (supportedMethods) {
 			const requestMethod = (request.method ?? 'GET').toUpperCase();
 
 			if (requestMethod === 'OPTIONS') {
-				if (!headers['cache-control']) {
-					headers['cache-control'] =
-						'public, s-maxage=30, max-age=30, stale-while-revalidate';
+				if (!responseHeaders.some(([header]) => header === 'cache-control')) {
+					responseHeaders.push([
+						'cache-control',
+						'public, s-maxage=30, max-age=30, stale-while-revalidate'
+					]);
 				}
 
-				return new NextResponse(supportedMethods.join(', '));
+				return new NextResponse(supportedMethods.join(', '), {
+					headers: responseHeaders
+				});
 			}
 
 			if (!supportedMethods.includes(requestMethod)) {
@@ -137,7 +116,15 @@ function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 		}
 
 		try {
-			return await responder(request, headers);
+			const response = await responder(request);
+
+			for (const [key, value] of responseHeaders) {
+				if (!response.headers.has(key)) {
+					response.headers.set(key, value);
+				}
+			}
+
+			return response;
 		} catch (error: unknown) {
 			return handleError(error as Error);
 		}
