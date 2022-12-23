@@ -1,4 +1,4 @@
-import {type ServerResponse, type IncomingMessage} from 'node:http';
+import {type ServerResponse, type IncomingMessage} from 'http';
 import {type NextRequest} from 'next/server';
 
 export type Context = {
