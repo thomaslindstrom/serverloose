@@ -1,10 +1,10 @@
 import {type ServerResponse, type IncomingMessage} from 'http';
-import {type NextRequest} from 'next/server';
 
 export type Context = {
-	request: IncomingMessage | NextRequest;
+	request: IncomingMessage | Request;
 	response: ServerResponse;
 };
+
 export type HeaderValue = string | number | string[];
 export type Headers = Record<string, HeaderValue>;
 export type Responder = (context: Context) => any;

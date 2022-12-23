@@ -1,65 +1,63 @@
 {
-    "name": "serverloose",
-    "version": "2.0.7",
-    "description": "serverless utilities",
-    "keywords": [
-        "serverless",
-        "handler",
-        "request",
-        "response",
-        "utility",
-        "parse"
-    ],
-    "main": "build/index.js",
-    "types": "build/index.d.ts",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/thomaslindstrom/serverloose.git"
-    },
-    "author": "Thomas Lindstrøm <t@hom.as>",
-    "license": "MIT",
-    "scripts": {
-        "build": "tsc --p tsconfig.json",
-        "test": "jest --coverage --env=node --forceExit",
-        "lint": "xo --prettier",
-        "fix": "xo --prettier --fix",
-        "format": "prettier -w .",
-        "format:check": "prettier --check .",
-        "typescript:check": "tsc --noEmit --p tsconfig.json"
-    },
-    "dependencies": {
-        "body": "^5.1.0",
-        "content-type": "^1.0.4",
-        "multer": "^1.4.5-lts.1"
-    },
-    "peerDependencies": {
-        "next": "^13.1.0"
-    },
-    "devDependencies": {
-        "@types/body": "^5.1.1",
-        "@types/content-type": "^1.1.5",
-        "@types/multer": "^1.4.7",
-        "jest": "^27.5.1",
-        "prettier": "^2.8.1",
-        "typescript": "^4.9.4",
-        "xo": "^0.53.1"
-    },
-    "xo": {
-        "envs": [
-            "node"
-        ],
-        "rules": {
-            "import/extensions": 0,
-            "no-constructor-return": 0,
-            "unicorn/prefer-node-protocol": 0
-        },
-        "overrides": [
-            {
-                "files": "test.js",
-                "envs": [
-                    "jest"
-                ]
-            }
-        ]
-    }
+	"name": "serverloose",
+	"version": "2.0.7",
+	"description": "serverless utilities",
+	"keywords": [
+		"serverless",
+		"handler",
+		"request",
+		"response",
+		"utility",
+		"parse"
+	],
+	"main": "build/index.js",
+	"types": "build/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/thomaslindstrom/serverloose.git"
+	},
+	"author": "Thomas Lindstrøm <t@hom.as>",
+	"license": "MIT",
+	"scripts": {
+		"build": "tsc --p tsconfig.json",
+		"test": "jest --coverage --env=node --forceExit",
+		"lint": "xo --prettier",
+		"fix": "xo --prettier --fix",
+		"format": "prettier -w .",
+		"format:check": "prettier --check .",
+		"typescript:check": "tsc --noEmit --p tsconfig.json"
+	},
+	"dependencies": {
+		"body": "^5.1.0",
+		"content-type": "^1.0.4",
+		"multer": "^1.4.5-lts.1"
+	},
+	"devDependencies": {
+		"@types/body": "^5.1.1",
+		"@types/content-type": "^1.1.5",
+		"@types/multer": "^1.4.7",
+		"jest": "^27.5.1",
+		"prettier": "^2.8.1",
+		"typescript": "^4.9.4",
+		"xo": "^0.53.1"
+	},
+	"xo": {
+		"envs": [
+			"node"
+		],
+		"rules": {
+			"import/extensions": 0,
+			"no-constructor-return": 0,
+			"unicorn/prefer-node-protocol": 0,
+			"no-unused-vars": 2
+		},
+		"overrides": [
+			{
+				"files": "test.js",
+				"envs": [
+					"jest"
+				]
+			}
+		]
+	}
 }

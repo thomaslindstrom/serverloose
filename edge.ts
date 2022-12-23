@@ -1,6 +1,4 @@
-import {type NextRequest, NextResponse} from 'next/server';
-
-import type {HeaderValue, Headers, ResponderOptions} from './types';
+import type {ResponderOptions} from './types';
 import {
 	MethodNotAllowedError,
 	type ServerlooseError,
@@ -42,7 +40,7 @@ const defaultResponseHeaders: Array<[string, string]> = [
 	['strict-transport-security', 'max-age=16070400; includeSubDomains']
 ];
 
-function handleError(error: Error) {
+function handleError(error: Error, options?: ResponseInit) {
 	let outputError: ServerlooseError;
 
 	if (isServerlooseError(error)) {
@@ -52,20 +50,20 @@ function handleError(error: Error) {
 		console.error(error);
 	}
 
-	return NextResponse.json(
-		{
+	return new Response(
+		JSON.stringify({
 			success: false,
 			error: {
 				type: outputError.type,
 				code: outputError.code,
 				message: outputError.message
 			}
-		},
-		{status: outputError.status ?? 500}
+		}),
+		{...options, status: outputError.status ?? 500}
 	);
 }
 
-export type EdgeResponder = (request: NextRequest) => Promise<NextResponse>;
+export type EdgeResponder = (request: Request) => Promise<Response>;
 
 /**
  * Edge handler function utility
@@ -91,7 +89,7 @@ function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 		]
 	];
 
-	return async (request: NextRequest) => {
+	return async (request: Request) => {
 		const responseHeaders: HeadersInit = headers;
 
 		if (supportedMethods) {
@@ -105,13 +103,13 @@ function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 					]);
 				}
 
-				return new NextResponse(supportedMethods.join(', '), {
+				return new Response(supportedMethods.join(', '), {
 					headers: responseHeaders
 				});
 			}
 
 			if (!supportedMethods.includes(requestMethod)) {
-				return handleError(new MethodNotAllowedError());
+				return handleError(new MethodNotAllowedError(), {headers});
 			}
 		}
 
@@ -126,7 +124,7 @@ function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 
 			return response;
 		} catch (error: unknown) {
-			return handleError(error as Error);
+			return handleError(error as Error, {headers});
 		}
 	};
 }

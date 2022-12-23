@@ -1,8 +1,7 @@
-import {type NextRequest} from 'next/server';
 import {type Context} from '../types';
 
-function isNextRequest(request: Context['request']): request is NextRequest {
-	return 'nextUrl' in request;
+function isRequest(request: Context['request']): request is Request {
+	return !('aborted' in request);
 }
 
 /**
@@ -15,7 +14,7 @@ export default function getRequestHeader(
 	request: Context['request'],
 	header: string
 ) {
-	const value = isNextRequest(request)
+	const value = isRequest(request)
 		? request.headers.get(header)
 		: request.headers[header];
 
