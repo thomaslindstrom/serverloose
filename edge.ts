@@ -1,7 +1,12 @@
-import type {Context, HeaderValue, Responder, ResponderOptions} from './types';
-import handleResponse from './utilities/handle-response';
-import handleError from './utilities/handle-error';
-import {MethodNotAllowedError} from './utilities/errors';
+import {type NextRequest, NextResponse} from 'next/server';
+
+import type {HeaderValue, Headers, ResponderOptions} from './types';
+import {
+	MethodNotAllowedError,
+	type ServerlooseError,
+	UnknownError,
+	isServerlooseError
+} from './utilities/errors';
 
 export * from './utilities/errors';
 
@@ -42,36 +47,42 @@ const responseListHeaders = new Set([
 	'access-control-allow-headers'
 ]);
 
-function patchResponseListHeader(
-	response: Context['response'],
-	header: string,
-	value: HeaderValue
-) {
-	if (response.hasHeader(header)) {
-		const headerValue = response.getHeader(header);
+function handleError(error: Error) {
+	let outputError: ServerlooseError;
 
-		if (typeof headerValue === 'string') {
-			const currentValues = headerValue.split(/\s*?,\s*?/);
-			const stringedValue = String(value);
-
-			if (!currentValues.includes(stringedValue)) {
-				response.setHeader(
-					header,
-					currentValues.concat(stringedValue).join(', ')
-				);
-			}
-		}
+	if (isServerlooseError(error)) {
+		outputError = error;
+	} else {
+		outputError = new UnknownError();
+		console.error(error);
 	}
+
+	return NextResponse.json(
+		{
+			success: false,
+			error: {
+				type: outputError.type,
+				code: outputError.code,
+				message: outputError.message
+			}
+		},
+		{status: outputError.status ?? 500}
+	);
 }
 
+export type EdgeResponder = (
+	request: NextRequest,
+	headers: Headers
+) => Promise<NextResponse>;
+
 /**
- * Handler function utility
- * @param {function} responder - responder function
+ * Edge handler function utility
+ * @param {function} responder - edge responder function
  * @param {object} options - handler options
  *
  * @returns {function} handler - prepared handler
  **/
-function handler(responder: Responder, options: ResponderOptions = {}) {
+function handler(responder: EdgeResponder, options: ResponderOptions = {}) {
 	const supportedMethods = options.methods?.map((method) =>
 		method.toUpperCase()
 	);
@@ -86,16 +97,25 @@ function handler(responder: Responder, options: ResponderOptions = {}) {
 			: ''
 	};
 
-	return async (request: Context['request'], response: Context['response']) => {
-		const context = {request, response};
+	return async (request: NextRequest) => {
+		const headers: Headers = {};
 
 		for (const [key, value] of Object.entries(responseHeaders)) {
-			if (response.hasHeader(key)) {
+			if (headers[key]) {
 				if (responseListHeaders.has(key)) {
-					patchResponseListHeader(response, key, value);
+					const headerValue = headers[key];
+
+					if (typeof headerValue === 'string') {
+						const currentValues = headerValue.split(/\s*?,\s*?/);
+						const stringedValue = String(value);
+
+						if (!currentValues.includes(stringedValue)) {
+							headers[key] = currentValues.concat(stringedValue).join(', ');
+						}
+					}
 				}
 			} else {
-				response.setHeader(key, value);
+				headers[key] = value;
 			}
 		}
 
@@ -103,26 +123,23 @@ function handler(responder: Responder, options: ResponderOptions = {}) {
 			const requestMethod = (request.method ?? 'GET').toUpperCase();
 
 			if (requestMethod === 'OPTIONS') {
-				if (!response.hasHeader('cache-control')) {
-					response.setHeader(
-						'cache-control',
-						'public, s-maxage=30, max-age=30, stale-while-revalidate'
-					);
+				if (!headers['cache-control']) {
+					headers['cache-control'] =
+						'public, s-maxage=30, max-age=30, stale-while-revalidate';
 				}
 
-				return response.end(supportedMethods.join(', '));
+				return new NextResponse(supportedMethods.join(', '));
 			}
 
 			if (!supportedMethods.includes(requestMethod)) {
-				handleError(context, new MethodNotAllowedError());
-				return;
+				return handleError(new MethodNotAllowedError());
 			}
 		}
 
 		try {
-			handleResponse(context, await responder(context));
+			return await responder(request, headers);
 		} catch (error: unknown) {
-			handleError(context, error as Error);
+			return handleError(error as Error);
 		}
 	};
 }

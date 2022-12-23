@@ -1,4 +1,3 @@
-import {URL} from 'node:url';
 import {type Context} from '../types';
 
 /**

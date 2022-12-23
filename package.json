@@ -32,6 +32,9 @@
         "content-type": "^1.0.4",
         "multer": "^1.4.5-lts.1"
     },
+    "peerDependencies": {
+        "next": "^13.1.0"
+    },
     "devDependencies": {
         "@types/body": "^5.1.1",
         "@types/content-type": "^1.1.5",
@@ -47,7 +50,8 @@
         ],
         "rules": {
             "import/extensions": 0,
-            "no-constructor-return": 0
+            "no-constructor-return": 0,
+            "unicorn/prefer-node-protocol": 0
         },
         "overrides": [
             {
