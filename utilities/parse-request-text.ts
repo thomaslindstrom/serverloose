@@ -46,7 +46,7 @@ export default async function parseRequestText(
 		}
 	}
 
-	return new Promise((resolve, reject) => {
+	return new Promise<string>((resolve, reject) => {
 		parseText(request, (error, body) => {
 			if (error) {
 				reject(

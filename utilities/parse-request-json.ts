@@ -17,7 +17,7 @@ export type ParseRequestJsonOptions = {
  * @param {boolean} options.ignoreContentType - ignore content type header
  * @returns {object} body
  **/
-export default async function parseRequestJson(
+export default async function parseRequestJson<Type>(
 	request: Context['request'],
 	options: ParseRequestJsonOptions = {}
 ) {
@@ -46,7 +46,7 @@ export default async function parseRequestJson(
 		}
 	}
 
-	return new Promise((resolve, reject) => {
+	return new Promise<Type>((resolve, reject) => {
 		parseJson(request, (error, body) => {
 			if (error) {
 				reject(
@@ -56,7 +56,7 @@ export default async function parseRequestJson(
 					})
 				);
 			} else {
-				resolve(body);
+				resolve(body as Type);
 			}
 		});
 	});

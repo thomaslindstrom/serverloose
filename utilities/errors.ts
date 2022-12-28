@@ -116,6 +116,34 @@ export class MissingRequiredParametersError extends Error {
 	}
 }
 
+export class ForbiddenError extends Error {
+	constructor() {
+		super();
+		const error: ServerlooseError = new Error('Forbidden');
+
+		error.isServerlooseError = true;
+		error.type = 'Forbidden';
+		error.status = 403;
+		error.code = 'forbidden';
+
+		return error;
+	}
+}
+
+export class UnauthorizedError extends Error {
+	constructor() {
+		super();
+		const error: ServerlooseError = new Error('Unauthorized');
+
+		error.isServerlooseError = true;
+		error.type = 'Unauthorized';
+		error.status = 401;
+		error.code = 'unauthorized';
+
+		return error;
+	}
+}
+
 export class UnknownError extends Error {
 	constructor() {
 		super();
