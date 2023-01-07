@@ -1,6 +1,6 @@
 {
 	"name": "serverloose",
-	"version": "2.0.9",
+	"version": "2.0.10",
 	"description": "serverless utilities",
 	"keywords": [
 		"serverless",
@@ -50,7 +50,7 @@
 			"no-constructor-return": 0,
 			"unicorn/prefer-node-protocol": 0,
 			"no-unused-vars": 2,
-            "n/prefer-global/buffer": 0
+			"n/prefer-global/buffer": 0
 		},
 		"overrides": [
 			{
