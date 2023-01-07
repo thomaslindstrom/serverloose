@@ -66,8 +66,16 @@ export default async function parseRequestFile(
 	}
 
 	return new Promise((resolve, reject) => {
-		processRequestFile.single(field)(request, undefined, () => {
-			const {file} = request;
+		processRequestFile.single(field)(request as any, undefined as any, () => {
+			const {file} = request as unknown as {
+				file: {
+					buffer: Buffer;
+					originalname: string;
+					encoding: string;
+					mimetype: string;
+					size: number;
+				};
+			};
 
 			if (!file) {
 				reject(

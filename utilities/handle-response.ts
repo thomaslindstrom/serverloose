@@ -10,6 +10,10 @@ export default function handleResponse({response}: Context, body: any = {}) {
 		return;
 	}
 
+	if (response.finished) {
+		return;
+	}
+
 	response.statusCode = 200;
 
 	if (response.hasHeader('content-type')) {

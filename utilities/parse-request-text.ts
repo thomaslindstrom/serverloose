@@ -47,7 +47,7 @@ export default async function parseRequestText(
 	}
 
 	return new Promise<string>((resolve, reject) => {
-		parseText(request, (error, body) => {
+		parseText(request as any, (error, body) => {
 			if (error) {
 				reject(
 					new InvalidInputError({

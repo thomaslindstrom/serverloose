@@ -50,7 +50,7 @@ export default async function parseRequestForm(
 	}
 
 	return new Promise((resolve, reject) => {
-		parseForm(request, (error, body) => {
+		parseForm(request as any, (error, body) => {
 			if (error) {
 				reject(
 					new InvalidInputError({

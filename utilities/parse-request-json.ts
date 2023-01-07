@@ -47,7 +47,7 @@ export default async function parseRequestJson<Type>(
 	}
 
 	return new Promise<Type>((resolve, reject) => {
-		parseJson(request, (error, body) => {
+		parseJson(request as any, (error, body) => {
 			if (error) {
 				reject(
 					new InvalidInputError({
