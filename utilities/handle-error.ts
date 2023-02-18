@@ -24,6 +24,10 @@ export default function handleError({response}: Context, error: Error) {
 		return;
 	}
 
+	if (response.finished) {
+		return;
+	}
+
 	response.statusCode = outputError.status ?? 500;
 	response.setHeader('content-type', 'application/json');
 	response.end(
