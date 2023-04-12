@@ -25,7 +25,8 @@
 		"fix": "xo --prettier --fix",
 		"format": "prettier -w .",
 		"format:check": "prettier --check .",
-		"typescript:check": "tsc --noEmit --p tsconfig.json"
+		"typescript:check": "tsc --noEmit --p tsconfig.json",
+		"prepublishOnly": "npm run build && npm run test && npm run format:check && npm run typescript:check && npm run lint"
 	},
 	"dependencies": {
 		"body": "^5.1.0",
