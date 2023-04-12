@@ -116,6 +116,18 @@ export class MissingRequiredParametersError extends Error {
 	}
 }
 
+export class PaymentRequiredError extends Error {
+    constructor() {
+        super();
+        const error: ServerlooseError = new Error('Method not allowed');
+        error.isServerlooseError = true;
+        error.type = 'PaymentRequired';
+        error.status = 402;
+        error.code = 'payment_required';
+        return error;
+    }
+}
+
 export class ForbiddenError extends Error {
 	constructor() {
 		super();
