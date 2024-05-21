@@ -8,7 +8,12 @@ import getRequestHeader from './get-request-header';
  **/
 export default function getRequestUrl(request: Context['request']) {
 	if ('url' in request && request.url) {
-		const forwardedProtocol = getRequestHeader(request, 'x-forwarded-proto');
+		let forwardedProtocol = getRequestHeader(request, 'x-forwarded-proto');
+
+		if (forwardedProtocol?.includes(',')) {
+			forwardedProtocol = forwardedProtocol.split(',')[0];
+		}
+
 		const protocol = forwardedProtocol ? `${forwardedProtocol}:` : 'http:';
 		const forwardedHost = getRequestHeader(request, 'x-forwarded-host');
 		const host = forwardedHost ?? getRequestHeader(request, 'host') ?? '';
