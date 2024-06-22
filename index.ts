@@ -117,15 +117,14 @@ function handler(responder: Responder, options: ResponderOptions = {}) {
 			}
 
 			if (!supportedMethods.includes(requestMethod)) {
-				handleError(context, new MethodNotAllowedError());
-				return;
+				return handleError(context, new MethodNotAllowedError());
 			}
 		}
 
 		try {
-			handleResponse(context, await responder(context));
+			return handleResponse(context, await responder(context));
 		} catch (error: unknown) {
-			handleError(context, error as Error);
+			return handleError(context, error as Error);
 		}
 	};
 }
