@@ -24,12 +24,14 @@ export default function handleResponse({response}: Context, body: any = {}) {
 			typeof body !== 'string' &&
 			['application/json', 'application/json; charset=utf-8'].includes(header)
 		) {
-			return response.end(JSON.stringify({success: true, ...body}));
+			response.end(JSON.stringify({success: true, ...body}));
+			return;
 		}
 
-		return response.end(body);
+		response.end(body);
+		return;
 	}
 
 	response.setHeader('content-type', 'application/json; charset=utf-8');
-	return response.end(JSON.stringify({success: true, ...body}));
+	response.end(JSON.stringify({success: true, ...body}));
 }

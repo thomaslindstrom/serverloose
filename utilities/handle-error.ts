@@ -31,7 +31,7 @@ export default function handleError({response}: Context, error: Error) {
 	response.statusCode = outputError.status ?? 500;
 	response.setHeader('content-type', 'application/json; charset=utf-8');
 
-	return response.end(
+	response.end(
 		JSON.stringify({
 			success: false,
 			error: {

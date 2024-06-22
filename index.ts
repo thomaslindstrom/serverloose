@@ -113,18 +113,20 @@ function handler(responder: Responder, options: ResponderOptions = {}) {
 					);
 				}
 
-				return response.end(supportedMethods.join(', '));
+				response.end(supportedMethods.join(', '));
+				return;
 			}
 
 			if (!supportedMethods.includes(requestMethod)) {
-				return handleError(context, new MethodNotAllowedError());
+				handleError(context, new MethodNotAllowedError());
+				return;
 			}
 		}
 
 		try {
-			return handleResponse(context, await responder(context));
+			handleResponse(context, await responder(context));
 		} catch (error: unknown) {
-			return handleError(context, error as Error);
+			handleError(context, error as Error);
 		}
 	};
 }
